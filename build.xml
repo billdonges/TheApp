@@ -1,6 +1,6 @@
-<project name="MongoWeb" default="help" basedir=".">
+<project name="TheApp" default="help" basedir=".">
   <!-- Define the properties used by the build -->
-  <property name="app.name"      value="MongoWeb"/>
+  <property name="app.name"      value="TheApp"/>
   <property name="tcserver.home" value="/opt/apache-tomcat-7.0.26" />
   <property name="work.home"    value="${basedir}/work"/>
   <property name="dist.home"     value="${basedir}/dist"/>

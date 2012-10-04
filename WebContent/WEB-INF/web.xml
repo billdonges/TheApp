@@ -7,20 +7,12 @@
   
   <servlet>
     <servlet-name>DbManagementGateway</servlet-name>
-    <servlet-class>mongoweb.servlets.DbManagementGateway</servlet-class>
+    <servlet-class>the.app.admin.DbManagementGateway</servlet-class>
   </servlet>
-  <servlet>
-    <servlet-name>CFManagementGateway</servlet-name>
-    <servlet-class>mongoweb.servlets.CFManagementGateway</servlet-class>
-  </servlet>  
-  
- 
+
   <servlet-mapping>
     <servlet-name>DbManagementGateway</servlet-name>
     <url-pattern>/db_management</url-pattern>
   </servlet-mapping>    
- <servlet-mapping>
-    <servlet-name>CFManagementGateway</servlet-name>
-    <url-pattern>/cff_mgmt</url-pattern>
-  </servlet-mapping>  
+ 
 </web-app>
