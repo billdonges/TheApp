@@ -42,12 +42,11 @@ public class Stats extends Bean
 	
 	public Stats(BasicDBObject obj) 
 	{
-		convertBasicDBObjectToLeague(obj);
+		convertBasicDBObjectToStats(obj);
 	}
 
 	// variables containing league collection information
-	private String[] cols = {"_id",
-			                 "serverUsed",
+	private String[] cols = {"serverUsed",
 			                 "db",
 			                 "collections",
 			                 "objects",
@@ -57,7 +56,7 @@ public class Stats extends Bean
 			                 "numExtents",
 			                 "indexes",
 			                 "indexSize",
-			                 "fileSIze",
+			                 "fileSize",
 			                 "nsSizeMB",
 			                 "ok"};
 	
@@ -73,12 +72,10 @@ public class Stats extends Bean
 							  STRING_TYPE, 
 							  STRING_TYPE, 
 							  STRING_TYPE, 
-							  STRING_TYPE, 
 							  STRING_TYPE};
 	private Hashtable data = new Hashtable();
 
 	// setters
-	public void setId(String s) 			{ data.put("_id", s); }
 	public void serverUsed(String s) 		{ data.put("serverUsed", s); }
     public void setDb(String s)				{ data.put("db", s); }
     public void setCollections(String s)	{ data.put("collections", s); }
@@ -94,7 +91,6 @@ public class Stats extends Bean
     public void setOk(String s)				{ data.put("ok", s); }
 	
 	// getters
-	public String getId() 					{ return (String)data.get("_id"); }
 	public String getServerUsed() 			{ return (String)data.get("serverUsed"); }	
     public String getDb()					{ return (String)data.get("db"); }
     public String getCollections()			{ return (String)data.get("collections"); }
@@ -113,7 +109,7 @@ public class Stats extends Bean
 	 * creates a BasicDBObject from the data Hashtable
 	 * @return BasicDBObject
 	 */
-	public BasicDBObject convertLeagueToBasicDBObject()
+	public BasicDBObject convertStatsToBasicDBObject()
 	{
 		BasicDBObject obj = new BasicDBObject();
 		Enumeration<String> e = data.keys();
@@ -129,10 +125,13 @@ public class Stats extends Bean
 	 * creates a league object from a BasicDBObject
 	 * @param obj
 	 */
-	public void convertBasicDBObjectToLeague(BasicDBObject obj)
+	public void convertBasicDBObjectToStats(BasicDBObject obj)
 	{
+		System.out.println("cols.length: " +cols.length);
+		System.out.println("obj: " + obj.toString());
 		for (String s : cols)
 		{
+			System.out.println("    getting "+s);
 			data.put(s, obj.get(s));
 		}
 	}
