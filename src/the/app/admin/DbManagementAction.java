@@ -6,12 +6,10 @@ import java.util.Set;
 
 import the.app.db.mongo.MongoFactory;
 
-import com.mongodb.CommandResult;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.Mongo;
-import com.mongodb.WriteResult;
 
 public class DbManagementAction 
 {
@@ -31,7 +29,6 @@ public class DbManagementAction
 	 */
 	public void close(DB db) throws Exception
 	{
-		System.out.println("  close("+db+")");
 		mcf_.close(db);
 	}
 	
@@ -41,7 +38,6 @@ public class DbManagementAction
 	 */
 	public Mongo getMongo() throws Exception
 	{
-		System.out.println("  getMongo() using "+dbm_.getDbLocation()+","+dbm_.getDbPort());
 		return mcf_.getConnection(dbm_.getDbLocation(), dbm_.getDbPort());
 	}
 	
@@ -53,7 +49,6 @@ public class DbManagementAction
 	 */
 	public DB getDB(String dbName) throws Exception
 	{
-		System.out.println("  getDB("+dbName+")");
 		DB db = null;
 		if (dbm_.isUseToAuth())
 		{
@@ -81,14 +76,12 @@ public class DbManagementAction
 	 */
 	public List<Stats> getDbStats() throws Exception
 	{
-		System.out.println("  getDbStats() - all");
 		List<String> dbs = getDbs();
 		List<Stats> stats = new ArrayList<Stats>();
 		for (int i = 0; i < dbs.size(); i++)
 		{
 			stats.add(getDbStats(dbs.get(i)));
 		}
-		System.out.println("  gotDbStats(), how many? " + stats.size());
 		return stats;
 	}
 	
@@ -99,7 +92,6 @@ public class DbManagementAction
 	 */
 	public Stats getDbStats(String dbName) throws Exception
 	{
-		System.out.println("  getDbStats()");
 		DB db = getDB(dbName);
 		return new Stats(db.getStats());
 	}
@@ -110,7 +102,6 @@ public class DbManagementAction
 	 */
 	public List<String> getDbs() throws Exception
 	{
-		System.out.println("  getDbs()");
 		DB db = getDB(dbm_.getDbName());
 		List<String> dbs = db.getMongo().getDatabaseNames();
 		return dbs;
@@ -123,7 +114,6 @@ public class DbManagementAction
 	 */
 	public List<String> getCols(String dbName) throws Exception
 	{
-		System.out.println("  getCols("+dbName+")");
 		DB db = getDB(dbName);
 		Set<String> set = db.getCollectionNames();
 		List<String> cols = new ArrayList<String>();
@@ -142,7 +132,6 @@ public class DbManagementAction
 	 */
 	public List<String> getRows(String dbName, String colName) throws Exception
 	{
-		System.out.println("  getRows("+dbName+","+colName+")");
 		List<String> rows = new ArrayList<String>();
 		DB db = getDB(dbName);
 		DBCollection col = db.getCollection(colName);
@@ -150,7 +139,6 @@ public class DbManagementAction
 		while (cur.hasNext())
 		{
 			String s = cur.next().toString();
-			System.out.println("    adding '"+s+"'");
 			rows.add(s);
 		}
 		return rows;

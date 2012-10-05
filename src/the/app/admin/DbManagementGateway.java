@@ -177,8 +177,6 @@ public class DbManagementGateway extends HttpServlet implements AppInfo
 				dbm.setCols(new ArrayList<String>());
 				dbm.setStats(new Stats());
 				dbm.setRows(new ArrayList<String>());
-				
-
 			}
 			else if (action.equals("col"))
 			{
