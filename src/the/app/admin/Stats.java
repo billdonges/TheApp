@@ -73,6 +73,7 @@ public class Stats extends Bean
 							  STRING_TYPE, 
 							  STRING_TYPE, 
 							  STRING_TYPE};
+	
 	private Hashtable data = new Hashtable();
 
 	// setters

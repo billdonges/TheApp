@@ -12,7 +12,5 @@
         <br/><br/>
         <br/><br/>          
         <a href="db_management.jsp">DB Management</a>
-        <br/><br/>
-        <a href="cff_mgmt">College Fantasy Football</a>
 	</body>
 </html>
