@@ -5,12 +5,16 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<link rel="stylesheet" type="text/css" href="css/basic.css" id="thecss">
-		<title>MongoWeb Project</title>
+		<title>TheApp Project</title>
 	</head>
 	<body>
-        MongoWeb Project.
+        TheApp Project.
         <br/><br/>
+        DB Management
         <br/><br/>          
-        <a href="db_management.jsp">DB Management</a>
+        <a href="db_management.jsp">Collections</a>
+        <br/>          
+        <a href="db_management?a=alldbstats">Statistics</a>
+        <br/><br/>
 	</body>
 </html>

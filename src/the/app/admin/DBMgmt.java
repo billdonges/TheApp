@@ -1,5 +1,6 @@
 package the.app.admin;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.mongodb.DB;
@@ -31,7 +32,23 @@ public class DBMgmt
 	private boolean useToAuth = false;
 	private String useToAuthChecked;
 	private DB authDB;	
+	private List<Stats> allDbStats;
 	
+	/**
+	 * @return the allDbStats
+	 */
+	public List<Stats> getAllDbStats() 
+	{
+		if (allDbStats == null)
+			allDbStats = new ArrayList<Stats>();
+		return allDbStats;
+	}
+	/**
+	 * @param allDbStats the allDbStats to set
+	 */
+	public void setAllDbStats(List<Stats> allDbStats) {
+		this.allDbStats = allDbStats;
+	}
 	/**
 	 * @return the stats
 	 */

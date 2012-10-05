@@ -19,11 +19,9 @@ public class Stats extends Bean
 	 * @param _id
 	 * @param name
 	 */
-	public Stats(String _id, String serverUsed, String db, String collections, String objects, String avgObjSize, String dataSize, String storageSize, String numExtents, 
+	public Stats(String serverUsed, String db, String collections, String objects, String avgObjSize, String dataSize, String storageSize, String numExtents, 
 			String indexes, String indexSize, String fileSize, String nsSizeMB, String ok)
 	{
-		System.out.println("  new Status("+_id+","+serverUsed+")");
-		data.put("_id", _id);
 		data.put("serverUsed", serverUsed);
 		data.put("db", db);
 		data.put("collections", collections);
@@ -37,7 +35,6 @@ public class Stats extends Bean
 		data.put("fileSize", fileSize);
 		data.put("nsSizeMB", nsSizeMB);
 		data.put("ok", ok);
-		
 	}
 	
 	public Stats(BasicDBObject obj) 
@@ -74,9 +71,11 @@ public class Stats extends Bean
 							  STRING_TYPE, 
 							  STRING_TYPE};
 	
-	private Hashtable data = new Hashtable();
+	private Hashtable<String, Object> data = new Hashtable<String, Object>();
+	private String json;
 
 	// setters
+	public void setJson(String s) 			{ json = s; }
 	public void serverUsed(String s) 		{ data.put("serverUsed", s); }
     public void setDb(String s)				{ data.put("db", s); }
     public void setCollections(String s)	{ data.put("collections", s); }
@@ -87,11 +86,12 @@ public class Stats extends Bean
     public void setNumExtents(String s)		{ data.put("numExtends", s); }
     public void setIndexes(String s)		{ data.put("indexes", s); }
     public void setIndexSize(String s)		{ data.put("indexSize", s); }
-    public void setFileSIze(String s)		{ data.put("fileSize", s); }
+    public void setFileSize(String s)		{ data.put("fileSize", s); }
     public void setNsSizeMB(String s)		{ data.put("nsSizeMB", s); }
     public void setOk(String s)				{ data.put("ok", s); }
 	
 	// getters
+    public String getJson()					{ if (json == null) { json = ""; } return json; }
 	public String getServerUsed() 			{ return (String)data.get("serverUsed"); }	
     public String getDb()					{ return (String)data.get("db"); }
     public String getCollections()			{ return (String)data.get("collections"); }
@@ -102,7 +102,7 @@ public class Stats extends Bean
     public String getNumExtents()			{ return (String)data.get("numExtends"); }
     public String getIndexes()				{ return (String)data.get("indexes"); }
     public String getIndexSize()			{ return (String)data.get("indexSize"); }
-    public String getFileSIze()				{ return (String)data.get("fileSize"); }
+    public String getFileSize()				{ return (String)data.get("fileSize"); }
     public String getNsSizeMB()				{ return (String)data.get("nsSizeMB"); }
     public String getOk()					{ return (String)data.get("ok"); }
     
@@ -119,6 +119,7 @@ public class Stats extends Bean
 			String key = e.nextElement();
 			obj.put(key, String.valueOf(data.get(key)));
 		}
+		setJson(obj.toString());
 		return obj;
 	}
 	
@@ -128,11 +129,9 @@ public class Stats extends Bean
 	 */
 	public void convertBasicDBObjectToStats(BasicDBObject obj)
 	{
-		System.out.println("cols.length: " +cols.length);
-		System.out.println("obj: " + obj.toString());
+		setJson(obj.toString());
 		for (String s : cols)
 		{
-			System.out.println("    getting "+s);
 			data.put(s, obj.get(s));
 		}
 	}

@@ -50,6 +50,8 @@ public class DbManagementGateway extends HttpServlet implements AppInfo
 		if (session.getAttribute("DBMgmt") != null)
 			dbm = (DBMgmt)session.getAttribute("DBMgmt");
 		
+		String url = "/db_management.jsp";
+		
 		try
 		{
 			/*
@@ -58,6 +60,7 @@ public class DbManagementGateway extends HttpServlet implements AppInfo
 			 * dbs = get dbs
 			 * col = get collections in db
 			 * dta = get data in specific collection
+			 * dbstats = get db statistics
 			 */
 			String action = req.getParameter("a");
 			action = AppValidation.checkNull(action);
@@ -174,6 +177,8 @@ public class DbManagementGateway extends HttpServlet implements AppInfo
 				dbm.setCols(new ArrayList<String>());
 				dbm.setStats(new Stats());
 				dbm.setRows(new ArrayList<String>());
+				
+
 			}
 			else if (action.equals("col"))
 			{
@@ -193,6 +198,11 @@ public class DbManagementGateway extends HttpServlet implements AppInfo
 				dbm.setDbs(dba.getDbs());
 				dbm.setCols(dba.getCols(dbName));
 				dbm.setRows(dba.getRows(dbName, colName));
+			}
+			else if (action.equals("alldbstats"))
+			{
+				dbm.setAllDbStats(dba.getDbStats());
+				url = "/db_stats.jsp";
 			}
 		}
 		catch (Exception e)
@@ -214,7 +224,7 @@ public class DbManagementGateway extends HttpServlet implements AppInfo
 		
 		session.setAttribute("DBMgmt", dbm);
 		
-		RequestDispatcher rd = getServletContext().getRequestDispatcher("/db_management.jsp");		
+		RequestDispatcher rd = getServletContext().getRequestDispatcher(url);		
 		rd.forward(req, res);
 	}
 	

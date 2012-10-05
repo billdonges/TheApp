@@ -76,6 +76,24 @@ public class DbManagementAction
 	
 	/**
 	 * 
+	 * @param dbs
+	 * @return
+	 */
+	public List<Stats> getDbStats() throws Exception
+	{
+		System.out.println("  getDbStats() - all");
+		List<String> dbs = getDbs();
+		List<Stats> stats = new ArrayList<Stats>();
+		for (int i = 0; i < dbs.size(); i++)
+		{
+			stats.add(getDbStats(dbs.get(i)));
+		}
+		System.out.println("  gotDbStats(), how many? " + stats.size());
+		return stats;
+	}
+	
+	/**
+	 * 
 	 * @param db
 	 * @return
 	 */
