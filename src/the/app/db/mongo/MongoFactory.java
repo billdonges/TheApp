@@ -75,7 +75,6 @@ public class MongoFactory
 	 */
 	public DB getDatabase(String dbLocation, String dbName, int dbPort, boolean validate, String username, String password) throws Exception
 	{
-		System.out.println("getDatabase("+dbLocation+","+dbName+","+dbPort+","+validate+","+username+","+password+")");
 		Mongo m = getConnection(dbLocation, dbPort);
 		DB db = getDatabase(m, dbName);
 		if (validate)
