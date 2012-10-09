@@ -20,20 +20,8 @@ public class Stats extends Bean
 	}
 
 	// variables containing league collection information
-	private String[] cols = {"serverUsed",
-			                 "db",
-			                 "collections",
-			                 "objects",
-			                 "avgObjSize",
-			                 "dataSize",
-			                 "storageSize",
-			                 "numExtents",
-			                 "indexes",
-			                 "indexSize",
-			                 "fileSize",
-			                 "nsSizeMB",
-			                 "ok"};
-	
+	private String[] cols = {"serverUsed", "db", "collections", "objects", "avgObjSize", "dataSize",
+			                 "storageSize", "numExtents", "indexes", "indexSize", "fileSize", "nsSizeMB", "ok"};
 	private Hashtable<String, Object> data = new Hashtable<String, Object>();
 	private String json;
 	
