@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-    
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="f" uri="http://java.sun.com/jstl/fmt" %>
 
@@ -95,7 +94,7 @@
                     &nbsp;
                 </td>
                 <td valign="top" width="85%">Database:
-                ${stat.getDb()}
+                    ${stat.getDb()}
                 </td>
             </tr>
             <tr>
@@ -103,7 +102,7 @@
                     &nbsp;
                 </td>
                 <td valign="top" width="85%">Collections:
-                 ${stat.getCollections()}
+                    ${stat.getCollections()}
                 </td>
             </tr>
             <tr>
@@ -111,7 +110,7 @@
                     &nbsp;
                 </td>
                 <td valign="top" width="85%">Objects:
-                ${stat.getObjects()}
+                    ${stat.getObjects()}
                 </td>
             </tr>
             <tr>
@@ -119,7 +118,7 @@
                     &nbsp;
                 </td>
                 <td valign="top" width="85%">Average Object size:
-                ${stat.getAvgObjSize()}
+                    ${stat.getAvgObjSize()}
                 </td>
             </tr>
             <tr>
@@ -127,7 +126,7 @@
                     &nbsp;
                 </td>
                 <td valign="top" width="85%">Data size:
-                ${stat.getDataSize()}
+                    ${stat.getDataSize()}
                 </td>
             </tr>
             </c:forEach>

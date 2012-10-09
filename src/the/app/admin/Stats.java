@@ -14,29 +14,6 @@ public class Stats extends Bean
 	 */
 	public Stats() {}
 	
-	/**
-	 * loaded constructor
-	 * @param _id
-	 * @param name
-	 */
-	public Stats(String serverUsed, String db, String collections, String objects, String avgObjSize, String dataSize, String storageSize, String numExtents, 
-			String indexes, String indexSize, String fileSize, String nsSizeMB, String ok)
-	{
-		data.put("serverUsed", serverUsed);
-		data.put("db", db);
-		data.put("collections", collections);
-		data.put("objects", objects);
-		data.put("avgObjSize", avgObjSize);
-		data.put("dataSize", dataSize);
-		data.put("storageSize", storageSize);
-		data.put("numExtents", numExtents);
-		data.put("indexes", indexes);
-		data.put("indexSize", indexSize);
-		data.put("fileSize", fileSize);
-		data.put("nsSizeMB", nsSizeMB);
-		data.put("ok", ok);
-	}
-	
 	public Stats(BasicDBObject obj) 
 	{
 		convertBasicDBObjectToStats(obj);
@@ -57,20 +34,6 @@ public class Stats extends Bean
 			                 "nsSizeMB",
 			                 "ok"};
 	
-	private String[] types = {STRING_TYPE, 
-							  STRING_TYPE, 
-							  STRING_TYPE, 
-							  STRING_TYPE, 
-							  STRING_TYPE, 
-							  STRING_TYPE, 
-							  STRING_TYPE, 
-							  STRING_TYPE, 
-							  STRING_TYPE, 
-							  STRING_TYPE, 
-							  STRING_TYPE, 
-							  STRING_TYPE, 
-							  STRING_TYPE};
-	
 	private Hashtable<String, Object> data = new Hashtable<String, Object>();
 	private String json;
 	
@@ -78,35 +41,35 @@ public class Stats extends Bean
 	public void setJson(String s) 			{ json = s; }
 	public void serverUsed(String s) 		{ data.put("serverUsed", s); }
     public void setDb(String s)				{ data.put("db", s); }
-    public void setCollections(String s)	{ data.put("collections", s); }
-    public void setObjects(String s)		{ data.put("objects", s); }
-    public void setAvgObjSize(String s)		{ data.put("avgObjSize", s); }
-    public void setDataSize(String s)		{ data.put("dataSize", s); }
-    public void setStorageSize(String s)	{ data.put("storageSize", s); }
-    public void setNumExtents(String s)		{ data.put("numExtends", s); }
-    public void setIndexes(String s)		{ data.put("indexes", s); }
-    public void setIndexSize(String s)		{ data.put("indexSize", s); }
-    public void setFileSize(String s)		{ data.put("fileSize", s); }
-    public void setNsSizeMB(String s)		{ data.put("nsSizeMB", s); }
-    public void setOk(String s)				{ data.put("ok", s); }
+    public void setCollections(Integer i)	{ data.put("collections", i); }
+    public void setObjects(Integer i)		{ data.put("objects", i); }
+    public void setAvgObjSize(Double d)		{ data.put("avgObjSize", d); }
+    public void setDataSize(Integer i)		{ data.put("dataSize", i); }
+    public void setStorageSize(Integer i)	{ data.put("storageSize", i); }
+    public void setNumExtents(Integer i)	{ data.put("numExtends", i); }
+    public void setIndexes(Integer i)		{ data.put("indexes", i); }
+    public void setIndexSize(Integer i)		{ data.put("indexSize", i); }
+    public void setFileSize(Integer i)		{ data.put("fileSize", i); }
+    public void setNsSizeMB(Integer i)		{ data.put("nsSizeMB", i); }
+    public void setOk(Double d)				{ data.put("ok", d); }
 	
 	// getters
     public String getJson()					{ if (json == null) { json = ""; } return json; }
 	public String getServerUsed() 			{ return (String)data.get("serverUsed"); }	
     public String getDb()					{ return (String)data.get("db"); }
-    public String getCollections()			{ return (String)data.get("collections"); }
-    public String getObjects()				{ return (String)data.get("objects"); }
-    public String getAvgObjSize()			{ return (String)data.get("avgObjSize"); }
-    public String getDataSize()				{ return (String)data.get("dataSize"); }
-    public String getStorageSize()			{ return (String)data.get("storageSize"); }
-    public String getNumExtents()			{ return (String)data.get("numExtends"); }
-    public String getIndexes()				{ return (String)data.get("indexes"); }
-    public String getIndexSize()			{ return (String)data.get("indexSize"); }
-    public String getFileSize()				{ return (String)data.get("fileSize"); }
-    public String getNsSizeMB()				{ return (String)data.get("nsSizeMB"); }
-    public String getOk()					{ return (String)data.get("ok"); }
+    public Integer getCollections() 		{ return (Integer)data.get("collections"); }
+    public Integer getObjects()				{ return (Integer)data.get("objects"); }
+    public Double getAvgObjSize()			{ return (Double)data.get("avgObjSize"); }
+    public Integer getDataSize()			{ return (Integer)data.get("dataSize"); }
+    public Integer getStorageSize()			{ return (Integer)data.get("storageSize"); }
+    public Integer getNumExtents()			{ return (Integer)data.get("numExtends"); }
+    public Integer getIndexes()				{ return (Integer)data.get("indexes"); }
+    public Integer getIndexSize()			{ return (Integer)data.get("indexSize"); }
+    public Integer getFileSize()			{ return (Integer)data.get("fileSize"); }
+    public Integer getNsSizeMB()			{ return (Integer)data.get("nsSizeMB"); }
+    public Double getOk()					{ return (Double)data.get("ok"); }
     
-	/**
+    /**
 	 * creates a BasicDBObject from the data Hashtable
 	 * @return BasicDBObject
 	 */
@@ -129,12 +92,28 @@ public class Stats extends Bean
 	 */
 	public void convertBasicDBObjectToStats(BasicDBObject obj)
 	{
-		setJson(obj.toString());	
-		System.out.println("obj.toString() = "+obj.toString());
+		setJson(obj.toString());
 		for (String s : cols)
 		{
 			data.put(s, obj.get(s));
-			System.out.println("s = "+s+"   obj.get(s) = "+obj.get(s));
+		}
+	}	
+	
+	/**
+	 * the key, class of value, and value are shown for each row in the data hashtable
+	 */
+	public void showData()
+	{
+		Enumeration<String> e = data.keys();
+		System.out.println(" ");
+		System.out.println("-----------------------------------");
+		System.out.println("stats.showMe()");
+		while (e.hasMoreElements())
+		{
+			String k = e.nextElement();
+			Object o = (Object)data.get(k);
+			System.out.println("    key: " + k + ", class: " + o.getClass() + ", value: " + o);
 		}
 	}	
 }
+

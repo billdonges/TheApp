@@ -33,6 +33,7 @@ public class DBMgmt
 	private String useToAuthChecked;
 	private DB authDB;	
 	private List<Stats> allDbStats;
+
 	
 	/**
 	 * @return the allDbStats
