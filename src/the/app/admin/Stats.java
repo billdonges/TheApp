@@ -73,7 +73,7 @@ public class Stats extends Bean
 	
 	private Hashtable<String, Object> data = new Hashtable<String, Object>();
 	private String json;
-
+	
 	// setters
 	public void setJson(String s) 			{ json = s; }
 	public void serverUsed(String s) 		{ data.put("serverUsed", s); }
@@ -129,11 +129,12 @@ public class Stats extends Bean
 	 */
 	public void convertBasicDBObjectToStats(BasicDBObject obj)
 	{
-		setJson(obj.toString());
+		setJson(obj.toString());	
+		System.out.println("obj.toString() = "+obj.toString());
 		for (String s : cols)
 		{
 			data.put(s, obj.get(s));
+			System.out.println("s = "+s+"   obj.get(s) = "+obj.get(s));
 		}
-	}
-	
+	}	
 }

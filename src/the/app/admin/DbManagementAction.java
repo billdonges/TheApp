@@ -95,7 +95,7 @@ public class DbManagementAction
 		DB db = getDB(dbName);
 		return new Stats(db.getStats());
 	}
-	
+
 	/**
 	 * 
 	 * @return

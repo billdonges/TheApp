@@ -86,8 +86,48 @@
                 <td height="30" valign="top" width="15%">
                     <a href="db_management?a=dbstats&dbname=${stat.getDb()}">${stat.getDb()}</a>
                 </td>
-                <td valign="top" width="85%">
-                ${stat.getJson()}
+                <td valign="top" width="85%">Server:
+                ${stat.getServerUsed()}
+                </td>
+            </tr>
+            <tr>
+                <td height="30" valign="top" width="15%">
+                    &nbsp;
+                </td>
+                <td valign="top" width="85%">Database:
+                ${stat.getDb()}
+                </td>
+            </tr>
+            <tr>
+                <td height="30" valign="top" width="15%">
+                    &nbsp;
+                </td>
+                <td valign="top" width="85%">Collections:
+                 ${stat.getCollections()}
+                </td>
+            </tr>
+            <tr>
+                <td height="30" valign="top" width="15%">
+                    &nbsp;
+                </td>
+                <td valign="top" width="85%">Objects:
+                ${stat.getObjects()}
+                </td>
+            </tr>
+            <tr>
+                <td height="30" valign="top" width="15%">
+                    &nbsp;
+                </td>
+                <td valign="top" width="85%">Average Object size:
+                ${stat.getAvgObjSize()}
+                </td>
+            </tr>
+            <tr>
+                <td height="30" valign="top" width="15%">
+                    &nbsp;
+                </td>
+                <td valign="top" width="85%">Data size:
+                ${stat.getDataSize()}
                 </td>
             </tr>
             </c:forEach>
