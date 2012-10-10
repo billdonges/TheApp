@@ -30,7 +30,7 @@
     <body>
         <center>
         <form action="db_management" method="post" name="searchform">
-        <input type="hidden" id="a" name="a" value="dbs"/>
+        <input type="hidden" id="a" name="a" value="setconnect"/>
         <input type="hidden" id="connect" name="connect" value="new"/>
         <table cellpadding="0" cellspacing="0" border="0" width="60%">
             <tr><td height="50" valign="middle" colspan="2">TheApp Project</td></tr>
