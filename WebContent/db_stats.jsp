@@ -12,69 +12,24 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
         <link rel="stylesheet" type="text/css" href="css/basic.css" id="thecss">
-        <title>TheApp :: DB Statistics</title>
-        <script language="javascript">
-        <!--
-            function toggle(id) {
-	            var e = document.getElementById(id);
-	            if(e.style.display == 'none') {
-	                e.style.display = 'block';
-	            } else {
-	                e.style.display = 'none';
-	            }
-	        }
-        -->
-        </script>
+        <title>TheApp :: MongoDB Statistics</title>
         <style type="text/css">#div1, #div2, #div3 {position:absolute; top: 100; left: 200; width:200; visibility:hidden}</style>        
     </head>
     <body>
-        TheApp Project
-        <br/><br/>
-        Statistics<small>&nbsp;&nbsp;(<a href="index.jsp">home</a>)</small>
-        <br/><br/>
-        <c:if test="${DBMgmt.messageLength > 0}">
-            ${DBMgmt.message}<br/>
-        </c:if>
-        <c:if test="${DBMgmt.errorMessageLength > 0}">
-            ${DBMgmt.errorMessage}<br/>
-        </c:if>        
-        <br/>
-        
-        actions:
-        &nbsp;&nbsp;<a href="#" onclick="javascript:toggle('searchblock')">connect</a>
-        <br/><br/>
-        
-        <div id="searchblock" style="display:none">
-        <form action="db_management" method="post" name="searchform">
-        <input type="hidden" id="a" name="a" value="dbstats"/>
-        <input type="hidden" id="connect" name="connect" value="new"/>
         <table cellpadding="0" cellspacing="0" border="0" width="100%">
+            <tr><td height="50" valign="middle" colspan="2">TheApp Project</td></tr>
+            <tr><td height="50" valign="middle" colspan="2">Statistics<small>&nbsp;&nbsp;(<a href="index.jsp">home</a>)</small></td></tr>
             <tr>
-                <td height="30" valign="middle" width="15%" bgcolor="#C0C0C0">IP</td>
-                <td height="30" valign="middle" width="15%" bgcolor="#C0C0C0">Port</td>
-                <td height="30" valign="middle" width="15%" bgcolor="#C0C0C0">DB</td>
-                <td height="30" valign="middle" width="10%" bgcolor="#C0C0C0">Use Validation</td>
-                <td height="30" valign="middle" width="15%" bgcolor="#C0C0C0">Username</td>
-                <td height="30" valign="middle" width="15%" bgcolor="#C0C0C0">Password</td>
-                <td height="30" valign="middle" width="5%" bgcolor="#C0C0C0">Use to Auth</td>
-                <td height="30" valign="middle" width="10%" bgcolor="#C0C0C0">&nbsp;</td>
+                <td height="50" valign="middle" colspan="2">
+                    <c:if test="${DBMgmt.messageLength > 0}">
+                        ${DBMgmt.message}<br/>
+                    </c:if>
+                    <c:if test="${DBMgmt.errorMessageLength > 0}">
+                        ${DBMgmt.errorMessage}<br/>
+                    </c:if>                  
+                </td>
             </tr>
-            <tr>
-                <td height="30" valign="middle" width="15%"><input type="text" size="10" id="dblocation" name="dblocation" value="${DBMgmt.dbLocation}"/></td>
-                <td height="30" valign="middle" width="15%"><input type="text" size="10" id="dbport" name="dbport" value="${DBMgmt.dbPort}"/></td>
-                <td height="30" valign="middle" width="15%"><input type="text" size="10" id="dbname" name="dbname" value="${DBMgmt.dbName}"/></td>
-                <td height="30" valign="middle" width="10%"><input type="checkbox" id="dbusevalidation" name="dbusevalidation" /></td>
-                <td height="30" valign="middle" width="15%"><input type="text" size="10" id="dbusername" name="dbusername" value="${DBMgmt.dbUsername}"/></td>
-                <td height="30" valign="middle" width="15%"><input type="text" size="10" id="dbpassword" name="dbpassword" value="${DBMgmt.dbPassword}"/></td>
-                <td height="30" valign="middle" width="5%"><input type="checkbox" id="dbusetoauth" name="dbusetoauth" /></td>
-                <td height="30" valign="middle" width="10%"><input type="submit" value="search"/></td>
-            </tr>
-            <tr><td height="20">&nbsp;</td></tr>
-        </table>
-        </form>
-        </div>
-        
-        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+            <tr><td height="50" valign="middle" colspan="2">actions:&nbsp;&nbsp;<a href="db_management?a=dbs">get dbs</a></td></tr>        
             <tr>
                 <td height="30" valign="middle" width="15%" bgcolor="#C0C0C0">DB</td>
                 <td height="30" valign="middle" width="85%" bgcolor="#C0C0C0">Statistics</td>
