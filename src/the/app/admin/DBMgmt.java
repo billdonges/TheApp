@@ -33,8 +33,28 @@ public class DBMgmt
 	private String useToAuthChecked;
 	private DB authDB;	
 	private List<Stats> allDbStats;
+	private int pagenum;
+	private int numtoget;
+	private int rowcount;
 
-	
+	public int getRowcount() {
+		return rowcount;
+	}
+	public void setRowcount(int rowcount) {
+		this.rowcount = rowcount;
+	}
+	public int getNumtoget() {
+		return numtoget;
+	}
+	public void setNumtoget(int numtoget) {
+		this.numtoget = numtoget;
+	}
+	public int getPagenum() {
+		return pagenum;
+	}
+	public void setPagenum(int pagenum) {
+		this.pagenum = pagenum;
+	}
 	/**
 	 * @return the allDbStats
 	 */

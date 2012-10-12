@@ -36,7 +36,15 @@
                 <td height="30" valign="middle" width="15%" bgcolor="#C0C0C0">Collections</td>
                 <td height="30" valign="middle" width="70%" bgcolor="#C0C0C0">Data</td>
             </tr>
-            <tr><td colspan="3" height="10">&nbsp;</td></tr>
+            <tr>
+            	<td colspan="2" height="30">&nbsp;</td>
+            	<td height="30" valign="middle" width="70%">
+            		<input type="hidden" id="pagenum" name="pagenum" value="${DBMgmt.pagenum}"/>
+            		<input type="hidden" id="numtoget" name="numtoget" value="${DBMgmt.numtoget}"/>
+            		Page&nbsp;${DBMgmt.pagenum}&nbsp;Showing&nbsp;${DBMgmt.numtoget}&nbsp;of&nbsp;${DBMgmt.rowcount}
+            		<a href="db_management?a=dta&colname=${DBMgmt.colName}&dbname=${DBMgmt.dbName}&pagenum=${DBMgmt.pagenum}&numtoget=${DBMgmt.numtoget}">Next</a>
+            	</td>
+            </tr>
             <tr>
                 <td height="30" valign="top" width="15%">
                 <c:forEach var="db" items="${DBMgmt.dbs}">

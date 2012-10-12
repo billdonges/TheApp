@@ -57,7 +57,12 @@ public class DbManagementGateway extends HttpServlet implements AppInfo
 		DBMgmt dbm = new DBMgmt();
 		HttpSession session = req.getSession();
 		if (session.getAttribute("DBMgmt") != null)
+		{
 			dbm = (DBMgmt)session.getAttribute("DBMgmt");
+			dbm.setNumtoget(0);
+			dbm.setPagenum(0);
+			dbm.setRowcount(0);
+		}
 		
 		String url = "/db_management.jsp";
 		
@@ -172,13 +177,33 @@ public class DbManagementGateway extends HttpServlet implements AppInfo
 			}
 			else if (action.equals("dta"))
 			{
+				dbm.setNumtoget(0);
+				dbm.setPagenum(0);
+				dbm.setRowcount(0);
 				String dbName = AppValidation.checkNull(req.getParameter("dbname"));
 				String colName = AppValidation.checkNull(req.getParameter("colname"));
+				String pagenumstr = AppValidation.checkNull(req.getParameter("pagenum"));
+				if (pagenumstr.length() == 0)
+				{
+					pagenumstr = "0";
+				}
+				String numtogetstr = AppValidation.checkNull(req.getParameter("numtoget"));
+				if (numtogetstr.length() == 0)
+				{
+					numtogetstr = "25";
+				}
+				dbm.setNumtoget(Integer.parseInt(numtogetstr));
+				dbm.setPagenum(Integer.parseInt(pagenumstr)+1);
 				dbm.setDbName(dbName);
 				dbm.setColName(colName);
 				dbm.setDbs(dba.getDbs());
 				dbm.setCols(dba.getCols(dbName));
-				dbm.setRows(dba.getRows(dbName, colName));
+				dbm.setRows(dba.getRows(dbName, colName, dbm.getPagenum(), dbm.getNumtoget()));
+				dbm.setRowcount(dba.getRowCount(dbName, colName));
+				if (dbm.getNumtoget() > dbm.getRowcount())
+				{
+					dbm.setNumtoget(dbm.getRowcount());
+				}
 			}
 			else if (action.equals("alldbstats"))
 			{

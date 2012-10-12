@@ -130,18 +130,29 @@ public class DbManagementAction
 	 * @param colName
 	 * @return
 	 */
-	public List<String> getRows(String dbName, String colName) throws Exception
+	public List<String> getRows(String dbName, String colName, int pagenum, int nPerPage) throws Exception
 	{
 		List<String> rows = new ArrayList<String>();
 		DB db = getDB(dbName);
 		DBCollection col = db.getCollection(colName);
-		DBCursor cur = col.find();
+		DBCursor cur = col.find().skip((pagenum-1)*nPerPage).limit(nPerPage);
 		while (cur.hasNext())
 		{
 			String s = cur.next().toString();
 			rows.add(s);
 		}
 		return rows;
+	}
+	
+	public int getRowCount(String dbName, String colName) throws Exception
+	{
+		int cnt = 0;
+		List<String> rows = new ArrayList<String>();
+		DB db = getDB(dbName);
+		DBCollection col = db.getCollection(colName);
+		DBCursor cur = col.find();
+		cnt = cur.count();
+		return cnt;
 	}
 
 }
