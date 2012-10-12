@@ -17,10 +17,10 @@
     </head>
     <body>
         <table cellpadding="0" cellspacing="0" border="0" width="100%">
-            <tr><td height="50" valign="middle" colspan="2">TheApp Project</td></tr>
-            <tr><td height="50" valign="middle" colspan="2">Statistics<small>&nbsp;&nbsp;(<a href="index.jsp">home</a>)</small></td></tr>
+            <tr><td height="50" valign="middle" colspan="8">TheApp Project</td></tr>
+            <tr><td height="50" valign="middle" colspan="8">Statistics<small>&nbsp;&nbsp;(<a href="index.jsp">home</a>)</small></td></tr>
             <tr>
-                <td height="50" valign="middle" colspan="2">
+                <td height="50" valign="middle" colspan="8">
                     <c:if test="${DBMgmt.messageLength > 0}">
                         ${DBMgmt.message}<br/>
                     </c:if>
@@ -29,60 +29,33 @@
                     </c:if>                  
                 </td>
             </tr>
-            <tr><td height="50" valign="middle" colspan="2">actions:&nbsp;&nbsp;<a href="db_management?a=dbs">get dbs</a></td></tr>        
             <tr>
                 <td height="30" valign="middle" width="15%" bgcolor="#C0C0C0">DB</td>
-                <td height="30" valign="middle" width="85%" bgcolor="#C0C0C0">Statistics</td>
+                <td height="30" valign="middle" width="85%" bgcolor="#C0C0C0" colspan="7">Statistics</td>
             </tr>
-            <tr><td colspan="3" height="10">&nbsp;</td></tr>
+            <tr>
+                <td height="30" valign="middle" width="15%">&nbsp;</td>
+                <td height="30" valign="middle" width="20%">Server</td>
+                <td height="30" valign="middle" width="10%">Collections</td>
+                <td height="30" valign="middle" width="10%">Objects</td>
+                <td height="30" valign="middle" width="10%">Data</td>
+                <td height="30" valign="middle" width="15%">Storage</td>
+                <td height="30" valign="middle" width="10%">Indexes</td>
+                <td height="30" valign="middle" width="10%">File Size</td>
+            </tr>
+            <tr><td colspan="8" height="10">&nbsp;</td></tr>
             <c:forEach var="stat" items="${DBMgmt.allDbStats}">
             <tr>
                 <td height="30" valign="top" width="15%">
-                    <a href="db_management?a=dbstats&dbname=${stat.getDb()}">${stat.getDb()}</a>
+                	<a href="db_management?a=col&dbname=${stat.getDb()}">${stat.getDb()}</a>
                 </td>
-                <td valign="top" width="85%">Server:
-                ${stat.getServerUsed()}
-                </td>
-            </tr>
-            <tr>
-                <td height="30" valign="top" width="15%">
-                    &nbsp;
-                </td>
-                <td valign="top" width="85%">Database:
-                    ${stat.getDb()}
-                </td>
-            </tr>
-            <tr>
-                <td height="30" valign="top" width="15%">
-                    &nbsp;
-                </td>
-                <td valign="top" width="85%">Collections:
-                    ${stat.getCollections()}
-                </td>
-            </tr>
-            <tr>
-                <td height="30" valign="top" width="15%">
-                    &nbsp;
-                </td>
-                <td valign="top" width="85%">Objects:
-                    ${stat.getObjects()}
-                </td>
-            </tr>
-            <tr>
-                <td height="30" valign="top" width="15%">
-                    &nbsp;
-                </td>
-                <td valign="top" width="85%">Average Object size:
-                    ${stat.getAvgObjSize()}
-                </td>
-            </tr>
-            <tr>
-                <td height="30" valign="top" width="15%">
-                    &nbsp;
-                </td>
-                <td valign="top" width="85%">Data size:
-                    ${stat.getDataSize()}
-                </td>
+                <td height="30" valign="top" width="20%">${stat.getServerUsed()}</td>
+                <td height="30" valign="top" width="10%"><a href="db_management?a=dta&colname=${stat.getCollections()}&dbname=${stat.getDb()}">${stat.getCollections()}</a></td>
+                <td height="30" valign="top" width="10%">${stat.getObjects()}</td>
+                <td height="30" valign="top" width="10%">${stat.getDataSize()}</td>
+                <td height="30" valign="top" width="15%">${stat.getStorageSize()}</td>
+                <td height="30" valign="top" width="10%">${stat.getIndexes()}</td>
+                <td height="30" valign="top" width="10%">${stat.getFileSize()}</td>
             </tr>
             </c:forEach>
         </table>
