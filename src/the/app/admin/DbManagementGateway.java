@@ -2,6 +2,7 @@ package the.app.admin;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -35,7 +36,8 @@ public class DbManagementGateway extends HttpServlet implements AppInfo
 	public void doPost(HttpServletRequest req, HttpServletResponse res)throws ServletException, IOException 
 	{       
 		service(req,res);
-	}	
+	}
+	
 	/**
 	 * @throws IOException 
 	 * @throws ServletException 
@@ -44,7 +46,14 @@ public class DbManagementGateway extends HttpServlet implements AppInfo
 	protected void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException 
 	{
 		System.out.println("DBManagementGateway.service()");
-
+		
+	    Enumeration headerNames = req.getHeaderNames();
+	    while(headerNames.hasMoreElements()) {
+	        String headerName = (String)headerNames.nextElement();
+	        String headerVal  = (String)req.getHeader(headerName);
+	        System.out.println("name: " + headerName + ", val: " + headerVal);
+	    }
+		
 		DBMgmt dbm = new DBMgmt();
 		HttpSession session = req.getSession();
 		if (session.getAttribute("DBMgmt") != null)
