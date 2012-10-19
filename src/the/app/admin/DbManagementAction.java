@@ -9,6 +9,7 @@ import the.app.db.mongo.MongoFactory;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 
 public class DbManagementAction 
@@ -98,6 +99,21 @@ public class DbManagementAction
 
 	/**
 	 * 
+	 * @param col
+	 * @return
+	 */
+	public List<String> getIndexNames(DBCollection col) 
+	{
+        List<DBObject> list = col.getIndexInfo();
+        List<String> names = new ArrayList<String>();
+        for (DBObject o : list) {
+            names.add(o.toString());
+        }
+        return names;
+	}
+	
+	/**
+	 * 
 	 * @return
 	 */
 	public List<String> getDbs() throws Exception
@@ -144,15 +160,16 @@ public class DbManagementAction
 		return rows;
 	}
 	
+	/**
+	 * 
+	 * @param dbName
+	 * @param colName
+	 * @return
+	 * @throws Exception
+	 */
 	public int getRowCount(String dbName, String colName) throws Exception
 	{
-		int cnt = 0;
-		List<String> rows = new ArrayList<String>();
-		DB db = getDB(dbName);
-		DBCollection col = db.getCollection(colName);
-		DBCursor cur = col.find();
-		cnt = cur.count();
-		return cnt;
+		return (int) getDB(dbName).getCollection(colName).count();
 	}
 
 }

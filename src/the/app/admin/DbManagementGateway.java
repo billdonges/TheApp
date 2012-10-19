@@ -47,7 +47,7 @@ public class DbManagementGateway extends HttpServlet implements AppInfo
 	{
 		System.out.println("DBManagementGateway.service()");
 		
-	    Enumeration headerNames = req.getHeaderNames();
+	    Enumeration<String> headerNames = req.getHeaderNames();
 	    while(headerNames.hasMoreElements()) {
 	        String headerName = (String)headerNames.nextElement();
 	        String headerVal  = (String)req.getHeader(headerName);

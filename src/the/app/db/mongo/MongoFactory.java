@@ -2,53 +2,17 @@ package the.app.db.mongo;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.List;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 import com.mongodb.WriteConcern;
 
 public class MongoFactory 
 {
-
-	public static void main(String[] args)
-	{
-		try
-		{
-			MongoFactory m = new MongoFactory();
-			
-			String ip = "192.168.23.112";
-			int pt    = 27017;
-			
-			DB admindb = m.getDatabase(ip, "admin", pt, true, "admin", "dev=horse.play");
-			System.out.println("is admindb auth'ed? "+admindb.isAuthenticated());
-			
-			for (String s : admindb.getMongo().getDatabaseNames())
-			{
-				System.out.println(s);
-				DB tmp = m.getDatabase(admindb.getMongo(), s);
-				System.out.println(tmp.getStats());
-				System.out.println("  db:  "+s);
-				//for (String t : tmp.getCollectionNames())
-				//	System.out.println("    "+t);
-			}
-			System.out.println(" ");
-
-			/*
-			for (String s : admindb.getCollectionNames())
-				System.out.println(s);
-			
-			String stuff = "hydra_rlm2357";
-			DB rlm2357db = m.getDatabase(admindb.getMongo(), stuff);
-			//System.out.println("is rlm2357db auth'ed? "+admindb.isAuthenticated());
-			for (String s : rlm2357db.getCollectionNames())
-				System.out.println(s);
-			*/
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
 	
 	/**
 	 * closes the mongo object inside the db object, then nulls out the db object
@@ -89,7 +53,7 @@ public class MongoFactory
 	 * @param dbName
 	 * @return
 	 */
-	protected DB getDatabase(Mongo m, String dbName) 
+	public DB getDatabase(Mongo m, String dbName) 
 	{
 		return m.getDB(dbName);
 	}	
@@ -105,12 +69,60 @@ public class MongoFactory
 	{
 		return db.authenticate(username, passwd.toCharArray());
 	}
+
+	/**
+	 * creates an index on a collection  
+	 * 
+	 * col   = DBCollection to create the index on
+	 * field = field to add the index on
+	 * order = 1 for ascending, -1 for decending
+	 * 
+	 * @param col 
+	 * @param field
+	 * @param orderType 
+	 * @throws Exception
+	 */
+	public DBCollection createIndex(DBCollection col, String field, int order) throws Exception
+	{
+		if (order == 1 || order == -1) {
+			col.createIndex(new BasicDBObject(field, order));
+		} else {
+			throw new Exception ("The order must be set to either 1 (asc) or -1 (desc)");
+		}
+		return col;
+	}
+
+	/**
+	 * 
+	 * @param col
+	 */
+	public void showIndexes(DBCollection col)
+	{
+		List<DBObject> indexes = col.getIndexInfo();
+		System.out.println("how many indexes are there for "+col.getName()+" : "+indexes.size());
+		for (DBObject o : indexes)
+		{
+			System.out.println("index dbobject:  "+o);
+		}
+	}
+	
+	/**
+	 * 
+	 * @param col
+	 * @param indexName
+	 * @return
+	 */
+	public DBCollection dropIndex(DBCollection col, String indexName) 
+	{
+		col.dropIndex(indexName);
+		return col;
+	}
 	
 	/**
 	 * 
 	 * @param dbLocation
 	 * @param dbPort
-	 * @return
+	 * @return m
 	 * @throws Exception
 	 */
 	public Mongo getConnection(String dbLocation, int dbPort) throws Exception
@@ -125,7 +137,7 @@ public class MongoFactory
 	/**
 	 * 
 	 * @param m
-	 * @return
+	 * @return boolean
 	 */
 	public boolean mongoRunningAt(Mongo m) 
 	{

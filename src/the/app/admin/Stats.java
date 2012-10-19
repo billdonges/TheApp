@@ -24,6 +24,7 @@ public class Stats extends Bean
 			                 "storageSize", "numExtents", "indexes", "indexSize", "fileSize", "nsSizeMB", "ok"};
 	private Hashtable<String, Object> data = new Hashtable<String, Object>();
 	private String json;
+	private String [] indexNames;
 	
 	// setters
 	public void setJson(String s) 			{ json = s; }
@@ -40,6 +41,7 @@ public class Stats extends Bean
     public void setFileSize(Integer i)		{ data.put("fileSize", i); }
     public void setNsSizeMB(Integer i)		{ data.put("nsSizeMB", i); }
     public void setOk(Double d)				{ data.put("ok", d); }
+    public void setIndexNames(String[] s)	{ indexNames = s; } 
 	
 	// getters
     public String getJson()					{ if (json == null) { json = ""; } return json; }
@@ -56,6 +58,7 @@ public class Stats extends Bean
     public Integer getFileSize()			{ return (Integer)data.get("fileSize"); }
     public Integer getNsSizeMB()			{ return (Integer)data.get("nsSizeMB"); }
     public Double getOk()					{ return (Double)data.get("ok"); }
+    public String[] getIndexNames()			{ return indexNames; }
     
     /**
 	 * creates a BasicDBObject from the data Hashtable
@@ -102,6 +105,13 @@ public class Stats extends Bean
 			Object o = (Object)data.get(k);
 			System.out.println("    key: " + k + ", class: " + o.getClass() + ", value: " + o);
 		}
+
+		System.out.println("indexes - count: " + indexNames.length);
+		for (int i = 0; i < indexNames.length; i++)
+		{
+			System.out.println("    index: " + indexNames[i]);
+		}
+		System.out.println("-----------------------------------");
 	}	
 }
 
