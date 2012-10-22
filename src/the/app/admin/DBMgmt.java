@@ -36,7 +36,14 @@ public class DBMgmt
 	private int pagenum;
 	private int numtoget;
 	private int rowcount;
+	private String searchString;	
 
+	public String getSearchString() {
+		return searchString;
+	}
+	public void setSearchString(String searchString) {
+		this.searchString = searchString;
+	}
 	public int getRowcount() {
 		return rowcount;
 	}

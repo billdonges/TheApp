@@ -42,7 +42,8 @@
             		<input type="hidden" id="pagenum" name="pagenum" value="${DBMgmt.pagenum}"/>
             		<input type="hidden" id="numtoget" name="numtoget" value="${DBMgmt.numtoget}"/>
             		Page&nbsp;${DBMgmt.pagenum}&nbsp;Showing&nbsp;${DBMgmt.numtoget}&nbsp;of&nbsp;${DBMgmt.rowcount}
-            		<a href="db_management?a=dta&colname=${DBMgmt.colName}&dbname=${DBMgmt.dbName}&pagenum=${DBMgmt.pagenum}&numtoget=${DBMgmt.numtoget}">Next</a>
+            		<a href="db_management?a=dta&colname=${DBMgmt.colName}&dbname=${DBMgmt.dbName}&pagenum=${DBMgmt.pagenum}&numtoget=${DBMgmt.numtoget}">Next</a>&nbsp;&nbsp;
+            		<a href="db_management?a=colsearch&colname=${DBMgmt.colName}&dbname=${DBMgmt.dbName}&searchstring=${DBMgmt.searchString}">Search</a>
             	</td>
             </tr>
             <tr>

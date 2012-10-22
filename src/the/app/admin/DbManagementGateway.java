@@ -62,6 +62,7 @@ public class DbManagementGateway extends HttpServlet implements AppInfo
 			dbm.setNumtoget(0);
 			dbm.setPagenum(0);
 			dbm.setRowcount(0);
+			dbm.setSearchString("");
 		}
 		
 		String url = "/db_management.jsp";
@@ -209,6 +210,15 @@ public class DbManagementGateway extends HttpServlet implements AppInfo
 			{
 				dbm.setAllDbStats(dba.getDbStats());
 				url = "/db_stats.jsp";
+			}
+			else if (action.equals("colsearch"))
+			{
+				String dbName = AppValidation.checkNull(req.getParameter("dbname"));
+				String colName = AppValidation.checkNull(req.getParameter("colname"));
+				String searchString = AppValidation.checkNull(req.getParameter("searchstring"));
+				dbm.setSearchString(searchString);
+				dbm.setRows(dba.getSearchRows(dbName, colName, searchString));
+				url = "/col_search.jsp";
 			}
 			
 			dbm.setMessage("Connected: "+dbm.getDbLocation()+":"+dbm.getDbPort()+"/"+dbm.getDbName());

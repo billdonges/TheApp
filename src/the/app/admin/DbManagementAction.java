@@ -6,11 +6,13 @@ import java.util.Set;
 
 import the.app.db.mongo.MongoFactory;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
+import com.mongodb.util.JSON;
 
 public class DbManagementAction 
 {
@@ -170,6 +172,24 @@ public class DbManagementAction
 	public int getRowCount(String dbName, String colName) throws Exception
 	{
 		return (int) getDB(dbName).getCollection(colName).count();
+	}
+	
+	public List<String> getSearchRows(String dbName, String colName, String searchString) throws Exception
+	{
+		List<String> rows = new ArrayList<String>();
+		if ((searchString != null) && (searchString.length() > 0))
+		{
+			DB db = getDB(dbName);
+			DBCollection col = db.getCollection(colName);
+			DBObject obj = (DBObject) JSON.parse(searchString);
+			DBCursor cur = col.find(obj);
+			while (cur.hasNext())
+			{
+				String s = cur.next().toString();
+				rows.add(s);
+			}
+		}
+		return rows;
 	}
 
 }
