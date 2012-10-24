@@ -15,12 +15,12 @@ import the.app.db.mongo.MongoFactory;
 public class CreateAndPopulate 
 {
 
-	public static int NOTHING 	= 0;
-	public static int INSERT 	= 1;
-	public static int UPDATE 	= 2;
-	public static int DELETE	= 3;
-	public static int SHOW   	= 4;
-	public static int GET 		= 5;
+	public static int NOTHING 		= 0;
+	public static int INSERT 		= 1;
+	public static int UPDATE 		= 2;
+	public static int DELETE		= 3;
+	public static int SHOW   		= 4;
+	public static int GET 			= 5;
 	
 	public static void main(String[] args)
 	{
@@ -28,12 +28,18 @@ public class CreateAndPopulate
 		{
 			CreateAndPopulate cp = new CreateAndPopulate();
 			
-			String dbName 			= "asdf";
-			String collectionName 	= "sad";
-			int numOfDocs 			= 1000;
-			int action 				= CreateAndPopulate.GET;
+			String dbName 			= "";
+			String collectionName 	= "";
+			int numOfDocs 			= 0;
+			int action 				= CreateAndPopulate.NOTHING;
 
-			cp.run(dbName, collectionName, numOfDocs, action);
+			if (dbName.equals("")) 
+				System.err.println("dbname must not be \"\"");
+			else if (collectionName.equals(""))
+				System.err.println("collectionName must not be \"\"");
+			else
+				cp.run(dbName, collectionName, numOfDocs, action);
+			
 		}
 		catch (Exception e)
 		{
@@ -68,7 +74,7 @@ public class CreateAndPopulate
 		DBCollection col = createOrGetCollection(db, collectionName);
 
 		//------------------------------------------------------------------------------		
-		System.out.println("number of documents in "+col.getName()+" before action:  "+col.count());		
+		System.out.println("number of documents in "+col.getName()+" in db " + db.getName() +" before action:  "+col.count());		
 		if (action == INSERT)
 		{
 			col = removeExistingDocuments(col);
@@ -94,10 +100,12 @@ public class CreateAndPopulate
 		{
 			getData(mf, col, "teams");
 		}
+		
 		System.out.println("number of documents in "+col.getName()+" after action:    "+col.count());
 
 		mf.close(db);
 	}
+	
 	
 	/**
 	 * 

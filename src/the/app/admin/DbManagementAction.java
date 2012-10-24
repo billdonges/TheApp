@@ -6,7 +6,6 @@ import java.util.Set;
 
 import the.app.db.mongo.MongoFactory;
 
-import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
