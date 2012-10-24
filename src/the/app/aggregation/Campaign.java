@@ -20,6 +20,7 @@ public class Campaign
 	public static int GEN_BIG_TEST  = 6;
 	public static int GET_BIG_TEST 	= 7;
 	public static int NEXT_ID		= 8;
+	public static int REBUILD	    = 9;
 	
 	public static void main(String[] args)
 	{
@@ -83,11 +84,17 @@ public class Campaign
 		{
 			getNextCampaignId(col);
 		}
+		else if (action == REBUILD)
+		{
+			
+		}
 		
 		System.out.println("number of documents in "+col.getName()+" after action:    "+col.count());
 
 		mf.close(db);
 	}
+	
+	
 	
 	/**
 	 * 
