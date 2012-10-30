@@ -60,6 +60,8 @@ public class CreateAndPopulate
 	 */
 	public void run(String dbName, String collectionName, int numOfDocs, int action) throws Exception
 	{
+		System.out.println("start time: " + new java.util.Date());
+		
 		// create mongo factory instance
 		MongoFactory mf = new MongoFactory();
 		
@@ -73,7 +75,7 @@ public class CreateAndPopulate
 		// create and/or get col
 		DBCollection col = createOrGetCollection(db, collectionName);
 
-		//------------------------------------------------------------------------------		
+		//------------------------------------------------------------------------------
 		System.out.println("number of documents in "+col.getName()+" in db " + db.getName() +" before action:  "+col.count());		
 		if (action == INSERT)
 		{
@@ -102,6 +104,7 @@ public class CreateAndPopulate
 		}
 		
 		System.out.println("number of documents in "+col.getName()+" after action:    "+col.count());
+		System.out.println("end time: " + new java.util.Date());
 
 		mf.close(db);
 	}

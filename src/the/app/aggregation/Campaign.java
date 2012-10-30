@@ -9,6 +9,7 @@ import com.mongodb.AggregationOutput;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 import com.mongodb.WriteConcern;
@@ -17,10 +18,12 @@ public class Campaign
 {
 
 	public static int NOTHING 		= 0;
-	public static int GEN_BIG_TEST  = 6;
-	public static int GET_BIG_TEST 	= 7;
-	public static int NEXT_ID		= 8;
-	public static int REBUILD	    = 9;
+	public static int DELETE 		= 5;
+	public static int ADD_CAMPAIGN  = 6;
+	public static int GET_CAMPAIGN	= 7;
+	public static int GET_CAMPAIGNS	= 8;
+	public static int NEXT_ID		= 9;
+	public static int REBUILD	    = 10;
 	
 	public static void main(String[] args)
 	{
@@ -30,10 +33,14 @@ public class Campaign
 			
 			String dbName 			= "big";
 			String collectionName 	= "campaign_sends";
-			int numOfDocs 			= 0;
-			int action 				= Campaign.GET_BIG_TEST;
+			int numOfDocs			= 0;
+			int numOfCampaigns		= 730;
+			int low 				= 10000;
+			int high				= 100000;
+			int action 				= Campaign.GET_CAMPAIGN;
+			int campaignId			= 538;
 
-			c.run(dbName, collectionName, numOfDocs, action);
+			c.run(dbName, collectionName, numOfDocs, numOfCampaigns, action, low, high, campaignId);
 		}
 		catch (Exception e)
 		{
@@ -52,8 +59,17 @@ public class Campaign
 	 * @param removeExisting
 	 * @throws Exception
 	 */
-	public void run(String dbName, String collectionName, int numOfDocs, int action) throws Exception
+	public void run(String dbName, 
+				    String collectionName, 
+				    int numOfDocs, 
+				    int numOfCampaigns, 
+				    int action, 
+				    int low, 
+				    int high, 
+				    int campaignId) throws Exception
 	{
+		System.out.println("start time: " + new java.util.Date());
+		
 		// create mongo factory instance
 		MongoFactory mf = new MongoFactory();
 		
@@ -72,13 +88,21 @@ public class Campaign
 
 		//------------------------------------------------------------------------------		
 		System.out.println("number of documents in "+col.getName()+" in db " + db.getName() +" before action " + action + ":  "+col.count());		
-		if (action == GEN_BIG_TEST)
+		if (action == ADD_CAMPAIGN)
 		{
-			runBigTest(mf, col, numOfDocs);
+			for (int i = 0; i < numOfCampaigns; i++)
+			{
+				addCampaignToCollection(mf, col, numOfDocs, low, high);
+				if (i % 10 == 0) { System.out.println("      on "+i); }
+			}
 		}
-		else if (action == GET_BIG_TEST)
+		else if (action == GET_CAMPAIGN)
 		{
-			getBigTest(mf, col);
+			getCampaignFromCollection(mf, col, campaignId);
+		}
+		else if (action == GET_CAMPAIGNS)
+		{
+			getCampaignsFromCollection(mf, col);
 		}
 		else if (action == NEXT_ID)
 		{
@@ -86,10 +110,20 @@ public class Campaign
 		}
 		else if (action == REBUILD)
 		{
-			
+			removeExistingDocuments(col);
+			for (int i = 0; i < numOfCampaigns; i++)
+			{
+				addCampaignToCollection(mf, col, numOfDocs, low, high);
+				if (i % 10 == 0) { System.out.println("      on "+i); }
+			}
+		}
+		else if (action == DELETE)
+		{
+			removeExistingDocuments(col);
 		}
 		
 		System.out.println("number of documents in "+col.getName()+" after action:    "+col.count());
+		System.out.println("end time: " + new java.util.Date());
 
 		mf.close(db);
 	}
@@ -100,10 +134,10 @@ public class Campaign
 	 * 
 	 * @return
 	 */
-	public int getRandNumOfDocs()
+	public int getRandNumOfDocs(int low, int high)
 	{
-		int a = 10000;
-		int b = 100000;
+		int a = low;
+		int b = high;
 		double ran = Math.random();
 		return (int)((b-a)*ran + a);
 	}
@@ -121,10 +155,20 @@ public class Campaign
 	/**
 	 * 
 	 * @param col
+	 * @return
+	 */
+	public DBCollection removeExistingDocuments(DBCollection col)
+	{
+		col.remove(new BasicDBObject());
+		return col;
+	}	
+	
+	/**
+	 * 
+	 * @param col
 	 */
 	public int getNextCampaignId(DBCollection col)
 	{
-		System.out.println("start getNextCampaignId");
 		List<?> l = getDistinctCampaignIds(col);
 		int nextId = 0;
 		for (int i = 0; i < l.size(); i++)
@@ -134,7 +178,6 @@ public class Campaign
 				nextId = id;
 		}
 		nextId++;
-		System.out.println("end getNextCampaignId");
 		return nextId;
 	}
 	
@@ -144,15 +187,14 @@ public class Campaign
 	 * @param col
 	 * @param numOfDocs
 	 */
-	public void runBigTest(MongoFactory mf, DBCollection col, int numOfDocs)
+	public void addCampaignToCollection(MongoFactory mf, DBCollection col, int numOfDocs, int low, int high)
 	{
 		int campaign_id = getNextCampaignId(col);
 		int starting_user_id = 1;
 
 		if (numOfDocs == 0)
-			numOfDocs = getRandNumOfDocs();
+			numOfDocs = getRandNumOfDocs(low, high);
 		
-		System.out.println("creating "+numOfDocs+" for campaign "+campaign_id);
 		for (int i = 1; i <= numOfDocs; i++)
 		{
 			BasicDBObject sad = new BasicDBObject();
@@ -169,7 +211,7 @@ public class Campaign
 	 * @param mf
 	 * @param col
 	 */
-	public void getBigTest(MongoFactory mf, DBCollection col)
+	public void getCampaignsFromCollection(MongoFactory mf, DBCollection col)
 	{
 		String todo ="";
 		
@@ -179,10 +221,6 @@ public class Campaign
 		
 		if (todo.equals("agg") || todo.equals("both"))
 		{
-			System.out.println("----------------------------------------------------------");
-			System.out.println("start aggregation test");
-			System.out.println("----------------------------------------------------------");
-			
 			DBObject fields = new BasicDBObject("campaign_id", 1);
 			fields.put("_id", 0);
 			DBObject project = new BasicDBObject("$project",fields);
@@ -191,36 +229,34 @@ public class Campaign
 			groupfields.put("number_of_sends", new BasicDBObject("$sum",1));
 			DBObject group = new BasicDBObject("$group", groupfields);
 			
-			System.out.println("starting aggregation at "+new java.util.Date());
 			AggregationOutput output = col.aggregate(project, group);
-			System.out.println("ending aggregation at "+new java.util.Date());
-			System.out.println("output: " + output);
-	
-			System.out.println("----------------------------------------------------------");
-			System.out.println("end aggregation test");
-			System.out.println("----------------------------------------------------------");
 		}
 		else if (todo.equals("distinct") || todo.equals("both"))
 		{
-			System.out.println("----------------------------------------------------------");
-			System.out.println("start distinct test");
-			System.out.println("----------------------------------------------------------");
-			
-			System.out.println("starting distinct at "+new java.util.Date());
 			List<?> l = col.distinct("campaign_id");
-			System.out.println("got distinct, starting count at "+new java.util.Date());
+			
+			System.out.println("number of distinct campaign ids : " + l.size());
+			
 			for (int i = 0; i < l.size(); i++)
 			{
-				System.out.println(l.get(i));
-				
 				System.out.println("campaign_id " + i + " has " + col.count(new BasicDBObject("campaign_id",i)));
 			}
-			System.out.println("got distinct, ending count at "+new java.util.Date());
-			
-			System.out.println("----------------------------------------------------------");
-			System.out.println("end distinct test");
-			System.out.println("----------------------------------------------------------");
 		}
 	}
+	
+	/**
+	 * 
+	 * @param mf
+	 * @param col
+	 * @param campaignId
+	 */
+	public void getCampaignFromCollection(MongoFactory mf, DBCollection col, int campaignId)
+	{
+		DBObject query = new BasicDBObject("campaign_id", campaignId);
+		DBCursor cur = col.find(query);
+		System.out.println("count for campaign id: " + campaignId + " is " + cur.count());
+		//while (cur.hasNext())
+		//	System.out.println("   "+cur.next());
+	}	
 	
 }
