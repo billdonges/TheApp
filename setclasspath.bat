@@ -1,9 +1,9 @@
 set CLASSPATH=%CLASSPATH%;C:\opt\github\TheApp\build\classes;
-set CLASSPATH=%CLASSPATH%;C:\opt\github\TheApp\WEbContent\WEB-INF\lib\gson-2.2.2.jar;
-set CLASSPATH=%CLASSPATH%;C:\opt\github\TheApp\WEbContent\WEB-INF\lib\gson-2.2.2-javadoc.jar;
-set CLASSPATH=%CLASSPATH%;C:\opt\github\TheApp\WEbContent\WEB-INF\lib\gson-2.2.2.-sourcesjar;
-set CLASSPATH=%CLASSPATH%;C:\opt\github\TheApp\WEbContent\WEB-INF\lib\h2-1.3.168.jar;
-set CLASSPATH=%CLASSPATH%;C:\opt\github\TheApp\WEbContent\WEB-INF\lib\jedis-2.1.0.jar;
-set CLASSPATH=%CLASSPATH%;C:\opt\github\TheApp\WEbContent\WEB-INF\lib\json-simple-1.1.1.jar;
-set CLASSPATH=%CLASSPATH%;C:\opt\github\TheApp\WEbContent\WEB-INF\lib\jstl1.2.jar;
-set CLASSPATH=%CLASSPATH%;C:\opt\github\TheApp\WEbContent\WEB-INF\lib\mongo-2.9.0-RC1.jar;
+set CLASSPATH=%CLASSPATH%;C:\opt\github\TheApp\WebContent\WEB-INF\lib\gson-2.2.2.jar;
+set CLASSPATH=%CLASSPATH%;C:\opt\github\TheApp\WebContent\WEB-INF\lib\gson-2.2.2-javadoc.jar;
+set CLASSPATH=%CLASSPATH%;C:\opt\github\TheApp\WebContent\WEB-INF\lib\gson-2.2.2.-sourcesjar;
+set CLASSPATH=%CLASSPATH%;C:\opt\github\TheApp\WebContent\WEB-INF\lib\h2-1.3.169.jar;
+set CLASSPATH=%CLASSPATH%;C:\opt\github\TheApp\WebContent\WEB-INF\lib\jedis-2.1.0.jar;
+set CLASSPATH=%CLASSPATH%;C:\opt\github\TheApp\WebContent\WEB-INF\lib\json-simple-1.1.1.jar;
+set CLASSPATH=%CLASSPATH%;C:\opt\github\TheApp\WebContent\WEB-INF\lib\jstl1.2.jar;
+set CLASSPATH=%CLASSPATH%;C:\opt\github\TheApp\WebContent\WEB-INF\lib\mongo-2.9.0-RC1.jar;

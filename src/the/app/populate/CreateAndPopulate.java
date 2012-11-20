@@ -15,12 +15,13 @@ import the.app.db.mongo.MongoFactory;
 public class CreateAndPopulate 
 {
 
-	public static int NOTHING 		= 0;
-	public static int INSERT 		= 1;
-	public static int UPDATE 		= 2;
-	public static int DELETE		= 3;
-	public static int SHOW   		= 4;
-	public static int GET 			= 5;
+	public static int NOTHING 			= 0;
+	public static int INSERT_SAD		= 1;
+	public static int INSERT_RELATIONAL = 6;
+	public static int UPDATE 			= 2;
+	public static int DELETE			= 3;
+	public static int SHOW   			= 4;
+	public static int GET 				= 5;
 	
 	public static void main(String[] args)
 	{
@@ -28,17 +29,19 @@ public class CreateAndPopulate
 		{
 			CreateAndPopulate cp = new CreateAndPopulate();
 			
-			String dbName 			= "";
-			String collectionName 	= "";
-			int numOfDocs 			= 0;
-			int action 				= CreateAndPopulate.NOTHING;
+			String dbName 			= "rlm1";
+			String collectionName 	= "relational";
+			int numOfDocs 			= 100;
+			int action 				= CreateAndPopulate.INSERT_RELATIONAL;
+			String ipAddress		= "192.168.0.106";
+			int port				= 27017;
 
 			if (dbName.equals("")) 
 				System.err.println("dbname must not be \"\"");
 			else if (collectionName.equals(""))
 				System.err.println("collectionName must not be \"\"");
 			else
-				cp.run(dbName, collectionName, numOfDocs, action);
+				cp.run(ipAddress, port, dbName, collectionName, numOfDocs, action);
 			
 		}
 		catch (Exception e)
@@ -58,7 +61,7 @@ public class CreateAndPopulate
 	 * @param removeExisting
 	 * @throws Exception
 	 */
-	public void run(String dbName, String collectionName, int numOfDocs, int action) throws Exception
+	public void run(String ipAddress, int port, String dbName, String collectionName, int numOfDocs, int action) throws Exception
 	{
 		System.out.println("start time: " + new java.util.Date());
 		
@@ -66,7 +69,7 @@ public class CreateAndPopulate
 		MongoFactory mf = new MongoFactory();
 		
 		// get connection
-		Mongo m = mf.getConnection("localhost", 27017);
+		Mongo m = mf.getConnection(ipAddress, port);
 		m.setWriteConcern(WriteConcern.SAFE);
 		
 		// create and/or get db
@@ -77,10 +80,17 @@ public class CreateAndPopulate
 
 		//------------------------------------------------------------------------------
 		System.out.println("number of documents in "+col.getName()+" in db " + db.getName() +" before action:  "+col.count());		
-		if (action == INSERT)
+		if (action == INSERT_SAD)
 		{
 			col = removeExistingDocuments(col);
-			col = populateCollection(col, numOfDocs);
+			col = populateSADCollection(col, numOfDocs);
+		}
+		else if (action == INSERT_RELATIONAL)
+		{
+			DBCollection sCol = createOrGetCollection(db, "sad"); 
+			
+			col = removeExistingDocuments(col);
+			col = populateRelationalCollection(col, sCol);
 		}
 		else if (action == UPDATE)
 		{
@@ -170,7 +180,7 @@ public class CreateAndPopulate
 	 * @param numOfDocs
 	 * @return
 	 */
-	public DBCollection populateCollection(DBCollection col, int numOfDocs) 
+	public DBCollection populateSADCollection(DBCollection col, int numOfDocs) 
 	{
 		System.out.println("starting populate of collection "+col.getName()+" at "+new java.util.Date());
 		Vector<String> teams = new Vector<String>();
@@ -178,6 +188,7 @@ public class CreateAndPopulate
 		teams.add("atlanta falcons");
 		teams.add("atlanta braves");
 		teams.add("purdue boilermakers");
+		teams.add("georgia bulldogs");
 		int teamCnt = 0;
 		
 		for (int i = 1; i <= numOfDocs; i++)
@@ -190,8 +201,15 @@ public class CreateAndPopulate
 			sad.put("age", 38);
 			
 			BasicDBObject custom = new BasicDBObject();
-			custom.put("kids",2);
-			custom.put("cars",2);
+			int kids = 1;
+			int cars = 1;
+			if (i % 2 == 0) 
+			{ 
+				kids = 2;
+				cars = 2;
+			}
+			custom.put("kids",kids);
+			custom.put("cars",cars);
 			custom.put("houses",1);
 			sad.put("custom",custom);
 			
@@ -201,43 +219,72 @@ public class CreateAndPopulate
 			if (teamCnt == 4) { teamCnt = 0; }
 			sad.put("teams", team);
 			
-			ArrayList<BasicDBObject> orders = new ArrayList<BasicDBObject>();
-			for (int j = 0; j < 2; j++)
-			{
-				BasicDBObject order = new BasicDBObject();
-				order.put("order_id", i+"_"+j);
-				order.put("order_date", "1/1/2012");
-				order.put("amount","$50"+j+".00");
-
-				ArrayList<BasicDBObject> orderItems = new ArrayList<BasicDBObject>();
-				for (int k = 0; k < 3; k++)
-				{
-					String itemName = "phone";
-					String itemAmount = "$100.00";
-					
-					if (k == 1) {
-						itemName = "tablet";
-						itemAmount = "$300.00";
-					} else if (k == 2) {
-						itemName = "tv";
-						itemAmount = "$1300.00";
-					}
-					
-					BasicDBObject orderItem = new BasicDBObject();
-					orderItem.put("item_id", i+"_"+j+"_"+k);
-					orderItem.put("item_name", itemName);
-					orderItem.put("amount", itemAmount);
-					orderItems.add(orderItem);
-				}
-				order.put("items",orderItems);
-				orders.add(order);
-			}
-			sad.put("purchase_orders", orders);
-			
 			col.insert(sad);
 		}
 		System.out.println("ending populate of collection "+col.getName()+" at "+new java.util.Date());
 		return col;
+	}
+	
+	/**
+	 * 
+	 * @param col
+	 * @return
+	 */
+	public DBCollection populateRelationalCollection(DBCollection rCol, DBCollection sCol)
+	{
+		System.out.println("starting populate of collection "+rCol.getName()+" at "+new java.util.Date());
+		DBCursor cur = sCol.find();
+
+		System.out.println("cursor size is " + cur.size());
+		
+		int j = 1;
+		while (cur.hasNext())
+		{
+			 BasicDBObject sad = (BasicDBObject) cur.next();
+			
+			// set up relational db
+			BasicDBObject relational = new BasicDBObject();
+			relational.put("_id", sad.get("_id"));
+			
+			// set up purchase order object
+			ArrayList<BasicDBObject> orders = new ArrayList<BasicDBObject>();
+			BasicDBObject order = new BasicDBObject();
+			order.put("order_id", j);
+			order.put("order_date", "1/1/2012");
+			order.put("amount","$"+j+".00");
+
+			ArrayList<BasicDBObject> orderItems = new ArrayList<BasicDBObject>();
+			for (int k = 0; k < 3; k++)
+			{
+				String itemName = "phone";
+				String itemAmount = "$100.00";
+				
+				if (k == 1) {
+					itemName = "tablet";
+					itemAmount = "$300.00";
+				} else if (k == 2) {
+					itemName = "tv";
+					itemAmount = "$1300.00";
+				}
+				
+				BasicDBObject orderItem = new BasicDBObject();
+				orderItem.put("item_id", j+"_"+k);
+				orderItem.put("item_name", itemName);
+				orderItem.put("amount", itemAmount);
+				orderItems.add(orderItem);
+			}
+			
+			// add order items to items array in order
+			order.put("items",orderItems);
+			orders.add(order);
+			
+			relational.put("purchase_orders", orders);
+			j++;
+			
+			rCol.insert(relational);
+		}
+		System.out.println("ending populate of collection "+rCol.getName()+" at "+new java.util.Date());
+		return rCol;
 	}
 	
 	/**
