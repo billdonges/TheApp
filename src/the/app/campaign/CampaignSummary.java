@@ -1,4 +1,4 @@
-package the.app.summary;
+package the.app.campaign;
 
 public class CampaignSummary 
 {
