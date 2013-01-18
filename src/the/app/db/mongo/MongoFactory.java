@@ -28,9 +28,22 @@ public class MongoFactory
 	}
 	
 	/**
-	 * dbLocation should be defined in mongoweb.AppInfo
-	 * dbName should be defined in mongoweb.AppInfo
-	 * dbPort should be defined in mongoweb.AppInfo
+	 * 
+	 * @param dbLocation
+	 * @param dbName
+	 * @param dbPort
+	 * @return
+	 * @throws Exception
+	 */
+	public DB getDatabase(String dbLocation, String dbName, int dbPort) throws Exception
+	{
+		return getDatabase(dbLocation, dbName, dbPort, false, "", "");
+	}
+	
+	/**
+	 * dbLocation should be defined in the.app.AppInfo
+	 * dbName should be defined in the.app.AppInfo
+	 * dbPort should be defined in the.app.AppInfo
 	 * @param dbLocation
 	 * @param dbName
 	 * @param dbPort
